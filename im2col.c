@@ -1,0 +1,42 @@
+/*--------------------------------
+im2col_Jack_Cheng
+---------------------------------*/
+static void im2col_Jack_Cheng(size_t batch_size, size_t channels, size_t in_dim, size_t out_dim,
+    		   const elem_t * input,
+    		   elem_t * output,
+    		   const struct ConvParams * params){
+    		   
+    int output_start_point = 0;
+    
+    for(int b=0; b<batch_size; b++){
+    
+        for(int row=-(params->padding); row<params->in_dim - params->kernel_size + params->padding + 1; row+=(params->stride)){
+            
+            for(int col=-(params->padding); col<params->in_dim - params->kernel_size + params->padding + 1; col+=(params->stride)){
+                
+                int output_jump_index = 0;
+                // scan input like kernel    
+                for(int k_r=0; k_r<(params->kernel_size); k_r++){
+                
+                    for(int k_c=0; k_c<(params->kernel_size); k_c++){
+                        
+                        // printf("index = %d,", row*in_dim + col);
+                        int offset = (row*in_dim + col) + ((k_r*in_dim) + k_c) ; // (start point) + (path of kernel)
+                        
+                        int output_array_offset = output_start_point + output_jump_index*(out_dim*out_dim);
+                        //printf("address = %d,\n", output_array_offset);
+                        
+                        *(output + output_array_offset) = *(input + offset);
+                        
+              		 output_jump_index++;
+                       // printf("%d ",*(input + offset));
+                        
+                    }  
+                     //printf("\n");
+                }
+                output_start_point++;
+            }    
+            //printf("\n");
+        }
+    }
+}
