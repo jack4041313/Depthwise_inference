@@ -1,5 +1,5 @@
 /*--------------------------------
-im2col_Jack_Cheng
+im2col one channel
 ---------------------------------*/
 static void im2col_Jack_Cheng(size_t batch_size, size_t channels, size_t in_dim, size_t out_dim,
     		   const elem_t * input,
